@@ -1,0 +1,75 @@
+/ {
+    kscan0: kscan0 {
+        compatible = "zmk,kscan-gpio-matrix";
+        diode-direction = "col2row";
+        wakeup-source;
+
+        col-gpios
+            = <&gpio0 0 GPIO_ACTIVE_LOW>
+            , <&gpio0 1 GPIO_ACTIVE_LOW>
+            , <&gpio0 3 GPIO_ACTIVE_LOW>
+            , <&gpio0 4 GPIO_ACTIVE_LOW>
+            , <&gpio0 5 GPIO_ACTIVE_LOW>
+            , <&gpio0 6 GPIO_ACTIVE_LOW>
+            , <&gpio0 7 GPIO_ACTIVE_LOW>
+            , <&gpio0 8 GPIO_ACTIVE_LOW>
+            , <&gpio0 9 GPIO_ACTIVE_LOW>
+            , <&gpio0 10 GPIO_ACTIVE_LOW>
+            , <&gpio0 11 GPIO_ACTIVE_LOW>
+        
+            ;
+
+        row-gpios
+            = <&gpio0 22 (GPIO_ACTIVE_LOW>
+            , <&gpio0 21 (GPIO_ACTIVE_LOW>
+            , <&gpio0 20 (GPIO_ACTIVE_LOW>
+            , <&gpio0 19 (GPIO_ACTIVE_LOW>
+            , <&gpio0 18 (GPIO_ACTIVE_LOW>
+            , <&gpio0 17 (GPIO_ACTIVE_LOW>
+            ;
+    };
+};
+#include <dt-bindings/zmk/matrix_transform.h> // Put this with the other includes at the top of your overlay
+
+/ {
+    default_transform: keymap_transform0 {
+        compatible = "zmk,matrix-transform";
+        columns = <3>; // Length of the "col-gpios" array
+        rows = <3>; // Length of the "row-gpios" array
+        map = <
+        //   Key 1 | Key 2 | Key 3
+            RC(22,0) RC(22,1) RC(22,2)
+        //   Key 4 | Key 5 | Key 6
+            RC(22,3) RC(22,4) RC(22,5)
+        //   Key 7 | Key 8 | Key 9
+            RC(21,0) RC(21,1) RC(21,2)
+        //   Key 10 | Key 11 | Key 12
+            RC(21,3) RC(21,4) RC(20,3)
+        //   Key 13 | Key 14 | Key 15
+            RC(20,4) RC(19,6) RC(18,6)
+        //   Key 16 | Key 17 | Key 18
+            RC(19,7) RC(18,7) RC(19,8)
+        //   Key 19 | Key 20 | Key 21
+            RC(18,8) RC(19,9) RC(18,9)
+        //   Key 22 | Key 23 | Key 24
+            RC(17,9) RC(19,10) RC(18,10)
+        //   Key 25 | Key 26 | 
+            RC(17,10) RC(19,11) 
+        >;
+    };
+};
+
+/ {
+    physical_layout0: physical_layout_0 { // First physical layout, use different naming for other layouts
+        compatible = "zmk,physical-layout";
+        display-name = "Default Layout";
+        kscan = <&kscan0>; // Label of the kscan node, optional if all layouts use the same
+        transform = <&default_transform>; // Label of the matrix transform for this layout
+    };
+};
+/ {
+    chosen {
+        zmk,physical-layout = &physical_layout0;
+        // Other chosen items
+    };
+};
